@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 3 Todo List</title>
+    <script src="https://unpkg.com/vue@3.0.0/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <form @submit.prevent="addTodo">
+            <input type="text" v-model="newTodo">
+            <button type="submit">Add Todo</button>
+        </form>
+
+        <ul>
+            <li v-for="todo in todos" :key="todo.id">
+                {{ todo.text }}
+                <button @click="removeTodo(todo.id)">Remove</button>
+            </li>
+        </ul>
+
+        <div>
+            <h2>Rent Calculator</h2>
+            <form>
+                <div>
+                    <label>Amount:</label>
+                    <input type="number" v-model.number="amount">
+                </div>
+                <div>
+                    <label>Rent Percentage:</label>
+                    <input type="number" v-model.number="rentPercentage">
+                </div>
+                <div>
+                    <label>Years:</label>
+                    <input type="number" v-model.number="years">
+                </div>
+            </form>
+            <div>
+                Calculated Rent: {{ calculatedRent }}
+            </div>
+        </div>
+
+        <div>
+            <h2>Vue SVG Bar Chart</h2>
+            <form>
+                <label>Data 1:</label>
+                <input type="number" v-model.number="data1">
+                <label>Data 2:</label>
+                <input type="number" v-model.number="data2">
+            </form>
+            <svg width="200" height="200">
+                <rect :y="200 - data1" :height="data1" width="50" x="50" style="fill: rgb(103, 115, 255);"/>
+                <rect :y="200 - data2" :height="data2" width="50" x="120" style="fill: rgb(244, 122, 228);"/>
+            </svg>
+        </div>
+    </div>
+
+    <!--SVG CHART-->
+    
+
+
+    <script>
+        const { createApp } = Vue;
+        const app = createApp({
+            data() {
+                return {
+                    newTodo: '', 
+                    todos: [], 
+                    amount: 0,
+                    rentPercentage: 0,
+                    years: 0,
+                    data1: 50,
+                    data2: 100
+                };
+            },
+            methods: {
+                addTodo() {
+                    if (!this.newTodo.trim()) return;
+                    this.todos.push({ id: Date.now(), text: this.newTodo });
+                    this.newTodo = ''; 
+                },
+                removeTodo(id) {
+                    this.todos = this.todos.filter(todo => todo.id !== id);
+                }
+            },
+            computed: {
+                calculatedRent() {
+                    return this.amount * this.rentPercentage * this.years / 100;
+                }
+            },
+            watch: {
+                data1(newVal, oldVal) {
+                },
+                data2(newVal, oldVal) {
+                }
+            }
+        });
+        app.mount('#app');
+    </script>
+
+</body>
+</html>
